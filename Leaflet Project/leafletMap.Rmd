@@ -1,0 +1,51 @@
+---
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# A Bostonian's Sightseeing Tour
+
+### `r format(Sys.time(), "%B %d, %Y")`
+
+
+```{r unpackaging}
+
+cranURL <- "http://cran.rstudio.com/"
+
+suppressPackageStartupMessages(
+     if(!require(leaflet)) {install.packages("leaflet", repos = cranURL); library(leaflet)}
+)
+
+```
+
+
+```{r leafletting}
+
+
+damonHead <- makeIcon(
+     iconUrl = "http://i.imgur.com/aCR4Ppg.png",
+     iconAnchorX = 36 / 2, iconAnchorY = 52 / 2
+)
+
+bostonLocs <- data.frame(lat = c(42.346641, 42.37439, 42.355296, 42.366514, 42.335082),
+                         lng = c(-71.097195, -71.11626, -71.066051, -71.054799, -71.047861)
+)
+
+bostonPopups <- c("Matt Damon says,<br>\"Welcome to <a href='https://youtu.be/P1kmOtdHcZ0'>Fenway Pahk</a>. Now stop bothering me.\"",
+                  "Matt Damon says,<br>\"Here's Hahvahd. <a href='https://youtu.be/gcZPWkNY6x8?t=1m14s'>How do you like them apples?</a>\"",
+                  "Matt Damon says,<br>\"Take a stroll through <a href='https://youtu.be/feuNeJewzDo?t=3m50s'>Boston Common</a>. It's wicked nice.\"",
+                  "Matt Damon says,<br>\"Grab a <a href='https://youtu.be/eSfoF6MhgLA?t=2m8s'>cannoli</a> in the Nohth End.\"",
+                  "Matt Damon says,<br>\"Let's go to <a href='https://www.youtube.com/watch?v=ojZmJPr4jHE'>Southie</a>. A guy there owes me money.\"")
+
+bostonLocs %>%
+     leaflet() %>%
+     addTiles() %>%
+     addMarkers(icon = damonHead, popup = bostonPopups)
+
+
+```
